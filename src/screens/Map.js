@@ -56,18 +56,16 @@ export default class Map extends React.Component {
   getLocationPermission = async () => {
     const hasPermission = await CheckLocation.hasLocationPermission();
     if (hasPermission) {
-      this.watchLocation();
       this.getCurrentLocation();
-      this.setDestination();
     }
   };
 
-  watchLocation = () => {
+  watchLocation = async () => {
     const { coordinate } = this.state;
-    Location.watchPositionAsync(
+    await Location.watchPositionAsync(
       {
         enableHighAccuracy: true,
-        distanceInterval: 5,
+        distanceInterval: 0,
       },
       position => {
         const { routeCoordinates } = this.state;
@@ -77,8 +75,9 @@ export default class Map extends React.Component {
           latitude,
           longitude,
         };
-
-        coordinate.timing(newCoordinate).start();
+        if (this.marker) {
+          coordinate.timing(newCoordinate).start();
+        }
 
         // below code not working in expo app - react native issue with expo: https://github.com/react-community/react-native-maps/issues/2251
         // if (Platform.OS === 'android') {
@@ -108,9 +107,9 @@ export default class Map extends React.Component {
           latitude,
           longitude,
         },
-        latitude,
-        longitude,
       });
+
+      this.setDestination();
     });
   };
 
@@ -129,6 +128,8 @@ export default class Map extends React.Component {
         longitude,
       },
     });
+
+    this.watchLocation();
   };
 
   getMapRegion = () => ({
@@ -152,7 +153,7 @@ export default class Map extends React.Component {
           loadingEnabled
           provider="google"
           ref={c => (this.mapView = c)}
-          region={this.state.latitude ? this.getMapRegion() : null}
+          initialRegion={this.state.latitude ? this.getMapRegion() : null}
         >
           <Marker.Animated
             ref={marker => {
