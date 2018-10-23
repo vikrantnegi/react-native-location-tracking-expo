@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { GOOGLE_KEY } from '../constant';
 
 export default class Home extends React.Component {
   static navigationOptions = {
@@ -24,7 +25,7 @@ export default class Home extends React.Component {
   render() {
     return (
       <GooglePlacesAutocomplete
-        placeholder="Search"
+        placeholder="Search the place where you want to go.."
         minLength={2} // minimum length of text to search
         autoFocus={false}
         returnKeyType="search" // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
@@ -38,7 +39,7 @@ export default class Home extends React.Component {
         getDefaultValue={() => ''}
         query={{
           // available options: https://developers.google.com/places/web-service/autocomplete
-          key: 'AIzaSyAET33fvxXeERXcELnhI4AwemdvQGKPsXk',
+          key: GOOGLE_KEY,
           language: 'en', // language of the results
         }}
         styles={{
@@ -61,11 +62,3 @@ export default class Home extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

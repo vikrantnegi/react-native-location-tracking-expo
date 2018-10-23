@@ -5,6 +5,7 @@ import CheckLocation from '../components/Permission';
 import MapViewDirections from 'react-native-maps-directions';
 import Loader from '../components/Loader';
 const { Marker, AnimatedRegion, Polyline } = MapView;
+import { GOOGLE_KEY } from '../constant';
 
 const { width, height } = Dimensions.get('window');
 
@@ -164,7 +165,7 @@ export default class Map extends React.Component {
           <MapViewDirections
             origin={this.state.origin}
             destination={this.state.destination}
-            apikey="AIzaSyAET33fvxXeERXcELnhI4AwemdvQGKPsXk"
+            apikey={GOOGLE_KEY}
             strokeWidth={3}
             strokeColor="hotpink"
             onReady={result => {
